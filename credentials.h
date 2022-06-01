@@ -1,2 +1,2 @@
-#define SSIDc "COLOQUE_O_NOME_DO_SEU_ROTEADOR_AQUI"
-#define PASSc "COLOQUE_A_SENHA_DO_SEU_ROTEADOR_AQUI"
+#define SSIDc "Esp32 web server"
+#define PASSc "123456789"

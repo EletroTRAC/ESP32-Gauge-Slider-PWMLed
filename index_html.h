@@ -1,4 +1,3 @@
-
 const char indexHTML[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
@@ -69,11 +68,112 @@ const char indexHTML[] PROGMEM = R"=====(
     <div class="slider_div">
       <input id="slider" type="range" value="0" min="0" max="255" oninput="slider_change_value()">
     </div>
+    <a href="/page2">Página 2</a>
   </div>
 </body>
 
 </html>
-)=====" ;
+)=====";
+
+const char newPage[] PROGMEM = R"=====(
+<!DOCTYPE HTML>
+<html lang=”pt-br”>
+<head>
+  <meta charset=”UTF-8”>
+  <title>Pagina 2</title>
+</head>
+<script type="text/javascript">
+  function enviar_dados_botao() {
+    var value_slider = document.getElementById("caixa_de_numero").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/slider?value="+value_slider, true);
+    xhr.send();
+  }
+</script>
+<style>
+    body{
+        background: linear-gradient(70deg, blue, pink);
+    }
+    .text-center {
+        color: #fff;
+        text-transform: uppercase;
+        margin: -50px 0 80px 0;
+        display: block;
+        text-align: center;
+    }
+    .box{
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        background-color: rgba(0, 0, 0, 0.89);
+        border-radius:3px;
+        padding:70px 100px;
+    }
+    .input-container{
+        position:relative;
+        margin-bottom:25px;
+    }
+    .input-container label{
+        position:absolute;
+        top:0px;
+        left:0px;
+        font-size:16px;
+        color:#fff;	
+        pointer-events:none;
+        transition: all 0.5s ease-in-out;
+    }
+    .input-container input {
+        border:0;
+        border-bottom:1px solid #555;  
+        background:transparent;
+        width:100%;
+        padding:8px 0 5px 0;
+        font-size:16px;
+        color:#fff;
+    }
+    .input-container input:focus{ 
+        border:none;	
+        outline:none;
+        border-bottom:1px solid #e74c3c;	
+    }
+    .btn{
+        color:#fff;
+        background-color:#e74c3c;
+        outline: none;
+        border: 0;
+        color: #fff;
+        padding:10px 20px;
+        text-transform:uppercase;
+        margin-top:50px;
+        border-radius:2px;
+        cursor:pointer;
+        position:relative;
+    }
+    .input-container input:focus ~ label,
+    .input-container input:valid ~ label{
+        top:-12px;
+        font-size:12px;
+    }
+    .back-button {
+        position: fixed;
+        left: 2rem;
+        top: 2rem;
+    }
+</style>
+<body>
+    <a class="back-button" href="indexHTML.html">Voltar</a>
+    <div class="box">
+        <h2 class="text-center">PWM Send Value</h2>
+        <div class="input-container">
+            <input id="caixa_de_numero" type="number" min="0" max="255">
+            <label>Valor PWM</label>	
+        </div>
+            <button class="btn" onclick="enviar_dados_botao()">Enviar!</button>
+    </div>
+</body>
+</html>
+)=====";
 
 
 const char gauge[] PROGMEM = R"=====(
