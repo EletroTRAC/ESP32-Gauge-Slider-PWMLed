@@ -1,27 +1,84 @@
 const char indexHTML[] PROGMEM = R"=====(
 <!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-  <script src="gauge.min.js"></script>
-  <title>Brilho LED</title>
+<html lang="pt-br">
 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Led Control</title>
+  <script src="gauge.min.js"></script>
   <script type="text/javascript">
-    window.onload = start;
+    //window.onload = start;
 
     function slider_change_value() {
-      var value_slider = document.getElementById("slider").value;
-      Gauge.Collection.get('gauge1').setValue(value_slider);
+      var value_slider = document.getElementById("slider01").value;
+      Gauge.Collection.get('gauge01').setValue(value_slider);
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/slider?value="+value_slider, true);
+      xhr.open("GET", "/slider01?value=" + value_slider, true);
       xhr.send();
+    }
+
+    function slider_change_value02() {
+      var value_slider = document.getElementById("slider02").value;
+      Gauge.Collection.get('gauge02').setValue(value_slider);
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/slider02?value=" + value_slider, true);
+      xhr.send();
+    }
+
+    function change(obj) {
+      var TABGAUGE01Style = document.getElementById("gg01");
+      var TABGAUGE02Style = document.getElementById("gg02");
+
+      var SLIDER01 = document.getElementById('slider01');
+      var SLIDER02 = document.getElementById('slider02');
+
+      var GAUGE01 = document.getElementById("gauge01");
+      var GAUGE02 = document.getElementById("gauge02");
+      if (obj) {
+
+        TABGAUGE02Style.style.background = 'var(--background-li-desfoca)';
+        TABGAUGE01Style.style.background = 'var(--background-lista)';
+
+        GAUGE01.style.display = 'block';
+        GAUGE02.style.display = 'none';
+
+        SLIDER01.style.display = 'block';
+        SLIDER02.style.display = 'none';
+
+      } else {
+
+        TABGAUGE02Style.style.background = 'var(--background-lista)';
+        TABGAUGE01Style.style.background = 'var(--background-li-desfoca)';
+
+        GAUGE01.style.display = 'none';
+        GAUGE02.style.display = 'block';
+
+        SLIDER01.style.display = 'none';
+        SLIDER02.style.display = 'block';
+
+      }
+    }
+
+    function aktualisieren() {
+      //console.log("500 mili interval");
     }
   </script>
 
   <style type="text/css">
+    :root {
+      --background-lista: #1ab188;
+      --background-li-desfoca: rgba(160, 179, 176, 0.25);
+    }
+    body {
+      background: #c1bdba;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     #wrap {
       text-align: center;
+      align-items: center;
       vertical-align: middle;
       max-width: 900px;
       margin: 0 auto;
@@ -46,30 +103,86 @@ const char indexHTML[] PROGMEM = R"=====(
       background: lightgreen;
     }
 
-    #Online {
-      display: inline-block;
-      float: left;
-      border: 1px solid #666666;
-      border-radius: 10px;
-      width: 20px;
+    .tab-group {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 40px 0;
     }
+    .tab-group:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .tab-group li a {
+      display: block;
+      text-decoration: none;
+      padding: 15px;
+      background: var(--background-li-desfoca);
+      color: #a0b3b0;
+      font-size: 20px;
+      float: left;
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+      transition: .5s ease;
+    }
+
+    .tab-group li a:hover {
+      background: #179b77;
+      color: #ffffff;
+    }
+
+    .tab-group .active a {
+      background: var(--background-lista);
+      color: #ffffff;
+    }
+
+    
+
+
   </style>
 </head>
 
 <body>
-  <div id="wrap">
-    <div class="Form-Einstellungen">
-      Controle de LED PWM
-      <div id="Online"> &ensp;</div>
+
+  <body>
+    <div id="wrap">
+      <div class="Form-Einstellungen">
+        Controle de LED PWM
+      </div>
+      <div class="tab-group">
+        <li class="tab active">
+          <a href="#gauge01" class="tabsgauge" id="gg01" onclick="change(true)">Leitura 01</a>
+        </li>
+
+        <li class="tab">
+          <a href="#gauge02" class="tabsgauge" id="gg02" onclick="change(false)">Leitura 02</a>
+        </li>
+      </div>
+
+      <div id="divgauge">
+        <canvas id="gauge01" width="500" height="500" data-type="canv-gauge" data-title="Brilho LED" data-min-value="0"
+          data-max-value="255" data-major-ticks="0 10 20 30 40 50 60 70 80 90 100" data-minor-ticks="2"
+          data-stroke-ticks="true" data-units="%" data-value-format="2.2" data-glow="true" data-animation-delay="5"
+          data-animation-duration="2000" data-animation-fn="bounce" data-colors-needle="#f00 #00f"
+          data-highlights="0 255 #aaa" data-onready="setInterval(aktualisieren,500);"></canvas><br>
+      </div>
+
+      <div id="divgauge">
+        <canvas id="gauge02" width="500" height="500" data-type="canv-gauge" data-title="Brilho LED" data-min-value="0"
+          data-max-value="255" data-major-ticks="0 10 20 30 40 50 60 70 80 90 100" data-minor-ticks="2"
+          data-stroke-ticks="true" data-units="%" data-value-format="2.2" data-glow="true" data-animation-delay="5"
+          data-animation-duration="2000" data-animation-fn="bounce" data-colors-needle="#f00 #00f"
+          data-highlights="0 255 #aaa" data-onready="setInterval(aktualisieren,500);" style="display: none;" ></canvas><br>
+      </div>
+      
+      <div class="slider_div">
+        <input id="slider01" type="range" value="0" min="0" max="255" oninput="slider_change_value()">
+        <input id="slider02" type="range" value="0" min="0" max="255" style="display: none;" oninput="slider_change_value02()">
+      </div>
+      <a href="page2.html">Página 2</a>
     </div>
-    <div class="Anzeige">
-      <canvas id="gauge1" width="500" height="500" data-type="canv-gauge" data-title="Brilho LED" data-min-value="0" data-max-value="255" data-major-ticks="0 10 20 30 40 50 60 70 80 90 100" data-minor-ticks="2" data-stroke-ticks="true" data-units="%" data-value-format="2.2" data-glow="true" data-animation-delay="5" data-animation-duration="2000" data-animation-fn="bounce" data-colors-needle="#f00 #00f" data-highlights="0 255 #aaa" data-onready="setInterval(aktualisieren,500);"></canvas><br>
-    </div>
-    <div class="slider_div">
-      <input id="slider" type="range" value="0" min="0" max="255" oninput="slider_change_value()">
-    </div>
-    <a href="/page2">Página 2</a>
-  </div>
+  </body>
 </body>
 
 </html>
